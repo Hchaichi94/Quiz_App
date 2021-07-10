@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Difficulty, fecthQuizQuestions, QuestionState } from './API';
+import { GlobalStyle, Wrapper } from './App.styles';
 import QuestionCard from './components/QuestionCard';
 
 
@@ -58,29 +59,32 @@ const App = () => {
     } else setNumber(nextQ)
   }
 
-  return <div className="App">
+  return (
+    <>
+      <GlobalStyle />
+      <Wrapper>
+        <h1>React Quiz</h1>
+        {gameOver || userAnswers.length === Total_Questions ? <button className="start" onClick={startTrivia}>Start</button> : null}
+        {!gameOver ? <p className="score">Score: {score} </p> : null}
+        {Loading && <p>Loading questions ...</p>}
+        {!Loading && !gameOver && (
+          <QuestionCard
+            questionNr={number + 1}
+            totalQuestions={Total_Questions}
+            answers={questions[number].answers}
+            question={questions[number].question}
+            userAnswer={userAnswers ? userAnswers[number] : undefined}
+            callback={checkAnswer}
+          />)}
+        {!gameOver && !Loading && userAnswers.length === number + 1
+          && number !== Total_Questions - 1 ? (
+          <button className="next" onClick={nextQuestion}>Next Question</button>
+        ) : null}
 
-    <h1>React Quiz</h1>
-    {gameOver || userAnswers.length === Total_Questions ? <button className="start" onClick={startTrivia}>Start</button> : null}
-    {!gameOver ? <p className="score">Score: </p> : null}
-    {Loading && <p>Loading questions ...</p>}
-    {!Loading && !gameOver && (
-      <QuestionCard
-        questionNr={number + 1}
-        totalQuestions={Total_Questions}
-        answers={questions[number].answers}
-        question={questions[number].question}
-        userAnswer={userAnswers ? userAnswers[number] : undefined}
-        callback={checkAnswer}
-      />)}
-    {!gameOver && !Loading && userAnswers.length === number + 1
-      && number !== Total_Questions - 1 ? (
-      <button className="next" onClick={nextQuestion}>Next Question</button>
-    ) : null}
 
-
-  </div>
-
+      </Wrapper>
+    </>
+  )
 }
 
 export default App;
