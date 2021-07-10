@@ -5,7 +5,7 @@ import QuestionCard from './components/QuestionCard';
 
 const Total_Questions = 15
 
-type AnswerObject = {
+export type AnswerObject = {
   question: string;
   answer: string;
   correct: boolean;
@@ -26,6 +26,7 @@ const App = () => {
     setLoading(true);
     setGameOver(false);
     const newQuestions = await fecthQuizQuestions(Total_Questions, Difficulty.EASY);
+    console.log(newQuestions)
     setQuestions(newQuestions);
     setScore(0);
     setUserAnswers([]);
@@ -51,7 +52,10 @@ const App = () => {
   }
 
   const nextQuestion = async () => {
-
+    const nextQ = number + 1
+    if (nextQ === Total_Questions) {
+      setGameOver(true)
+    } else setNumber(nextQ)
   }
 
   return <div className="App">
